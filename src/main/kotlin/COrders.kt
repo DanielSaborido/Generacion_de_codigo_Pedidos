@@ -1,28 +1,28 @@
 import entities.Orders
 import interfaces.DataSource
-import interfaces.IOrder
+import interfaces.IDataAccess
 import java.util.*
 
-class COrders(private val dataSource: DataSource) : IOrder {
-    override fun create(user: Orders): Orders? {
+class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
+    override fun create(entity: Orders): Orders? {
         val sql = "INSERT INTO ORDERS (id, owner, orderSize, orderPrice, date, state) VALUES (?, ?, ?, ?, ?, ?)"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
-                stmt.setString(1, user.id.toString())
-                stmt.setString(2, user.owner)
-                stmt.setString(3, user.orderSize.toString())
-                stmt.setString(4, user.orderPrice.toString())
-                stmt.setString(5, user.date.toString())
-                stmt.setString(6, user.state.toString())
+                stmt.setString(1, entity.id.toString())
+                stmt.setString(2, entity.owner)
+                stmt.setString(3, entity.orderSize.toString())
+                stmt.setString(4, entity.orderPrice.toString())
+                stmt.setString(5, entity.date.toString())
+                stmt.setString(6, entity.state.toString())
                 when(stmt.executeQuery()) {
                     null -> null
-                    else -> user
+                    else -> entity
                 }
             }
         }
     }
 
-    override fun getById(id: UUID): Orders? {
+    override fun getById(id: Any): Orders? {
         val sql = "SELECT * FROM ORDERS WHERE id = ?"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
@@ -67,23 +67,23 @@ class COrders(private val dataSource: DataSource) : IOrder {
         }
     }
 
-    override fun update(user: Orders): Orders {
+    override fun update(entity: Orders): Orders {
         val sql = "UPDATE ORDERS SET owner = ?, orderSize = ?, orderPrice = ?, date = ?, state = ? WHERE id = ?"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
-                stmt.setString(1, user.state.toString())
-                stmt.setString(2, user.date.toString())
-                stmt.setString(3, user.orderPrice.toString())
-                stmt.setString(4, user.orderSize.toString())
-                stmt.setString(5, user.owner)
-                stmt.setString(6, user.id.toString())
+                stmt.setString(1, entity.state.toString())
+                stmt.setString(2, entity.date.toString())
+                stmt.setString(3, entity.orderPrice.toString())
+                stmt.setString(4, entity.orderSize.toString())
+                stmt.setString(5, entity.owner)
+                stmt.setString(6, entity.id.toString())
                 stmt.executeUpdate()
-                user
+                entity
             }
         }
     }
 
-    override fun delete(id: UUID) {
+    override fun delete(id: Any) {
         val sql = "DELETE FROM ORDERS WHERE id = ?"
         dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
