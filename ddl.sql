@@ -1,4 +1,4 @@
-CREATE TABLE CLIENT(
+CREATE TABLE USERS(
                        DNI VARCHAR(9) PRIMARY KEY,
                        name VARCHAR(255),
                        phone INT,

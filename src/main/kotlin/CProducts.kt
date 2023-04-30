@@ -33,9 +33,9 @@ class CProducts(private val dataSource: DataSource) : IDataAccess<Products> {
                         id = UUID.fromString(rs.getString("id")),
                         name = rs.getString("name"),
                         description = rs.getString("description"),
-                        price = rs.getString("price").toInt(),
-                        taxes = rs.getString("taxes").toInt(),
-                        stock = rs.getString("stock").toInt()
+                        price = rs.getInt("price"),
+                        taxes = rs.getInt("taxes"),
+                        stock = rs.getInt("stock")
                     )
                 } else {
                     null
@@ -49,20 +49,20 @@ class CProducts(private val dataSource: DataSource) : IDataAccess<Products> {
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
                 val rs = stmt.executeQuery()
-                val users = mutableListOf<Products>()
+                val products = mutableListOf<Products>()
                 while (rs.next()) {
-                    users.add(
+                    products.add(
                         Products(
                             id = UUID.fromString(rs.getString("id")),
                             name = rs.getString("name"),
                             description = rs.getString("description"),
-                            price = rs.getString("price").toInt(),
-                            taxes = rs.getString("taxes").toInt(),
-                            stock = rs.getString("stock").toInt()
+                            price = rs.getInt("price"),
+                            taxes = rs.getInt("taxes"),
+                            stock = rs.getInt("stock")
                         )
                     )
                 }
-                users
+                products
             }
         }
     }

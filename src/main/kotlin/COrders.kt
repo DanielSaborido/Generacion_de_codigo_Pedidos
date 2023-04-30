@@ -1,4 +1,5 @@
 import entities.Orders
+import entities.stateOrder
 import interfaces.DataSource
 import interfaces.IDataAccess
 import java.util.*
@@ -35,7 +36,7 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
                         orderSize = rs.getInt("orderSize"),
                         orderPrice = rs.getInt("orderPrice"),
                         date = rs.getDate("date"),
-                        state = rs.getString("state")
+                        state = stateOrder.valueOf(rs.getString("state"))
                     )
                 } else {
                     null
@@ -49,20 +50,20 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
                 val rs = stmt.executeQuery()
-                val users = mutableListOf<Orders>()
+                val orders = mutableListOf<Orders>()
                 while (rs.next()) {
-                    users.add(
+                    orders.add(
                         Orders(
                             id = UUID.fromString(rs.getString("id")),
                             owner = rs.getString("owner"),
                             orderSize = rs.getInt("orderSize"),
                             orderPrice = rs.getInt("orderPrice"),
                             date = rs.getDate("date"),
-                            state = rs.getString("state")
+                            state = stateOrder.valueOf(rs.getString("state"))
                         )
                     )
                 }
-                users
+                orders
             }
         }
     }
