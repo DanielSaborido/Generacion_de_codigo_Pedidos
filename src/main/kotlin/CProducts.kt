@@ -2,9 +2,8 @@ import entities.Products
 import interfaces.DataSource
 import interfaces.IDataAccess
 import java.util.*
-
 class CProducts(private val dataSource: DataSource) : IDataAccess<Products> {
-    override fun create(entity: Products): Products? {
+    override fun create(entity: Products): Products {
         val sql = "INSERT INTO PRODUCTS (id, name, description, price, taxes, stock) VALUES (?, ?, ?, ?, ?, ?)"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
@@ -14,8 +13,7 @@ class CProducts(private val dataSource: DataSource) : IDataAccess<Products> {
                 stmt.setString(4, entity.price.toString())
                 stmt.setString(5, entity.taxes.toString())
                 stmt.setString(6, entity.stock.toString())
-                when(stmt.executeQuery()) {
-                    null -> null
+                when(stmt.executeUpdate()) {
                     else -> entity
                 }
             }
@@ -33,7 +31,7 @@ class CProducts(private val dataSource: DataSource) : IDataAccess<Products> {
                         id = UUID.fromString(rs.getString("id")),
                         name = rs.getString("name"),
                         description = rs.getString("description"),
-                        price = rs.getInt("price"),
+                        price = rs.getFloat("price"),
                         taxes = rs.getInt("taxes"),
                         stock = rs.getInt("stock")
                     )
@@ -56,7 +54,7 @@ class CProducts(private val dataSource: DataSource) : IDataAccess<Products> {
                             id = UUID.fromString(rs.getString("id")),
                             name = rs.getString("name"),
                             description = rs.getString("description"),
-                            price = rs.getInt("price"),
+                            price = rs.getFloat("price"),
                             taxes = rs.getInt("taxes"),
                             stock = rs.getInt("stock")
                         )

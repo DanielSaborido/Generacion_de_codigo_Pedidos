@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="basededatos" uuid="a1262694-b330-4809-bff9-ae8e3246e61a">
+    <data-source source="LOCAL" name="basededatos" uuid="0f87e6c6-1461-4adc-b085-bf3e50cb45f2">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:C:\Users\sabor\Downloads\Generacion_de_codigo_Pedidos\basededatos</jdbc-url>
+      <jdbc-url>jdbc:h2:./basededatos</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

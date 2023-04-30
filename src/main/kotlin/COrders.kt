@@ -6,13 +6,13 @@ import java.util.*
 
 class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
     override fun create(entity: Orders): Orders? {
-        val sql = "INSERT INTO ORDERS (id, owner, orderSize, orderPrice, date, state) VALUES (?, ?, ?, ?, ?, ?)"
+        val sql = "INSERT INTO ORDERS (id, owner, orderSize, debt, date, state) VALUES (?, ?, ?, ?, ?, ?)"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
                 stmt.setString(1, entity.id.toString())
                 stmt.setString(2, entity.owner)
                 stmt.setString(3, entity.orderSize.toString())
-                stmt.setString(4, entity.orderPrice.toString())
+                stmt.setString(4, entity.debt.toString())
                 stmt.setString(5, entity.date.toString())
                 stmt.setString(6, entity.state.toString())
                 when(stmt.executeQuery()) {
@@ -34,7 +34,7 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
                         id = UUID.fromString(rs.getString("id")),
                         owner = rs.getString("owner"),
                         orderSize = rs.getInt("orderSize"),
-                        orderPrice = rs.getInt("orderPrice"),
+                        debt = rs.getInt("orderPrice"),
                         date = rs.getDate("date"),
                         state = stateOrder.valueOf(rs.getString("state"))
                     )
@@ -57,7 +57,7 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
                             id = UUID.fromString(rs.getString("id")),
                             owner = rs.getString("owner"),
                             orderSize = rs.getInt("orderSize"),
-                            orderPrice = rs.getInt("orderPrice"),
+                            debt = rs.getInt("orderPrice"),
                             date = rs.getDate("date"),
                             state = stateOrder.valueOf(rs.getString("state"))
                         )
@@ -69,12 +69,12 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
     }
 
     override fun update(entity: Orders): Orders {
-        val sql = "UPDATE ORDERS SET owner = ?, orderSize = ?, orderPrice = ?, date = ?, state = ? WHERE id = ?"
+        val sql = "UPDATE ORDERS SET owner = ?, orderSize = ?, debt = ?, date = ?, state = ? WHERE id = ?"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
                 stmt.setString(1, entity.state.toString())
                 stmt.setString(2, entity.date.toString())
-                stmt.setString(3, entity.orderPrice.toString())
+                stmt.setString(3, entity.debt.toString())
                 stmt.setString(4, entity.orderSize.toString())
                 stmt.setString(5, entity.owner)
                 stmt.setString(6, entity.id.toString())
