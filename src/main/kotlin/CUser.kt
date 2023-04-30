@@ -3,7 +3,7 @@ import interfaces.DataSource
 import interfaces.IDataAccess
 
 class CUser(private val dataSource: DataSource) : IDataAccess<User> {
-    override fun create(entity: User): User? {
+    override fun create(entity: User): User {
         val sql = "INSERT INTO USERS (dni, name, phone, mail) VALUES (?, ?, ?, ?)"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
@@ -18,11 +18,11 @@ class CUser(private val dataSource: DataSource) : IDataAccess<User> {
         }
     }
 
-    override fun getById(id: Any): User? {
+    override fun getByName(name: String): User? {
         val sql = "SELECT * FROM USERS WHERE dni = ?"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
-                stmt.setString(1, id.toString())
+                stmt.setString(2, name)
                 val rs = stmt.executeQuery()
                 if (rs.next()) {
                     User(

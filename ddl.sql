@@ -18,9 +18,10 @@ CREATE TABLE ORDERS(
                       id VARCHAR(36) PRIMARY KEY,
                       owner VARCHAR(9),
                       debt NUMBER,
-                      orderSize NUMBER,
+                      products VARCHAR,
                       date DATE,
-                      state ENUM('Outstanding', 'Paid', 'Indicted', 'Sent', 'Delivered')
+                      state ENUM('Outstanding', 'Paid', 'Indicted', 'Sent', 'Delivered'),
+                      FOREIGN KEY (owner) REFERENCES USERS(DNI)
 );
 
 CREATE TABLE PAYMENT (

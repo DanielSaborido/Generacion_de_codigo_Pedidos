@@ -21,11 +21,11 @@ class CProducts(private val dataSource: DataSource) : IDataAccess<Products> {
         }
     }
 
-    override fun getById(id: Any): Products? {
-        val sql = "SELECT * FROM PRODUCTS WHERE id = ?"
+    override fun getByName(name: String): Products? {
+        val sql = "SELECT * FROM PRODUCTS WHERE name = ?"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
-                stmt.setString(1, id.toString())
+                stmt.setString(2, name)
                 val rs = stmt.executeQuery()
                 if (rs.next()) {
                     Products(
