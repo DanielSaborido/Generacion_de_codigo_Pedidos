@@ -11,8 +11,7 @@ class CUser(private val dataSource: DataSource) : IDataAccess<User> {
                 stmt.setString(2, entity.name)
                 stmt.setString(3, entity.phone.toString())
                 stmt.setString(4, entity.mail)
-                when(stmt.executeQuery()) {
-                    null -> null
+                when(stmt.executeUpdate()) {
                     else -> entity
                 }
             }

@@ -15,8 +15,7 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
                 stmt.setString(4, entity.debt.toString())
                 stmt.setString(5, entity.date.toString())
                 stmt.setString(6, entity.state.toString())
-                when(stmt.executeQuery()) {
-                    null -> null
+                when(stmt.executeUpdate()) {
                     else -> entity
                 }
             }
