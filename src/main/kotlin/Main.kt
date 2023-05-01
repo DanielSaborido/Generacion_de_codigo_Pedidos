@@ -55,7 +55,7 @@ fun main() {
     }
     */
     //insert information in oders
-
+    /*
     val orderList = listOf(
         Orders(owner = "45678901D", products = "72176b23-bd95-493c-a09b-7c2d1c1c1a34", debt = "72176b23-bd95-493c-a09b-7c2d1c1c1a34", amount = 5),
         Orders(owner = "45678901D", products = "c85733f2-3a5a-4e21-9206-ee8e91b91faa", debt = "c85733f2-3a5a-4e21-9206-ee8e91b91faa", amount = 1),
@@ -65,7 +65,7 @@ fun main() {
     for (order in orderList) {
         COrders(myDataSource).create(order)
     }
-
+    */
     //get the amount to pay for te user with the dni 45678901D
     var debt = COrders(myDataSource).getDebt("45678901D")
     println("La deuda es de $debt")
