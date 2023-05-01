@@ -55,18 +55,17 @@ fun main() {
     }
     */
     //insert information in oders
-    /*
+
     val orderList = listOf(
-        Orders(owner = "45678901D", products = "Nike T-Shirt", debt = 25.0f, amount = 1),
-        Orders(owner = "45678901D", products = "Adidas Sneakers", debt = 90.0f, amount = 1),
-        Orders(owner = "45678901D", products = "Puma Cap", debt = 15.0f, amount = 1),
-        Orders(owner = "45678901D", products = "Under Armour Socks", debt = 8.0f, amount = 1),
-        Orders(owner = "45678901D", products = "Reebok Shorts", debt = 30.0f, amount = 1)
+        Orders(owner = "45678901D", products = "72176b23-bd95-493c-a09b-7c2d1c1c1a34", debt = "72176b23-bd95-493c-a09b-7c2d1c1c1a34", amount = 5),
+        Orders(owner = "45678901D", products = "c85733f2-3a5a-4e21-9206-ee8e91b91faa", debt = "c85733f2-3a5a-4e21-9206-ee8e91b91faa", amount = 1),
+        Orders(owner = "45678901D", products = "6df0e2a1-042e-49cf-b344-9e39164df998", debt = "6df0e2a1-042e-49cf-b344-9e39164df998", amount = 1),
+        Orders(owner = "45678901D", products = "23ebdfbe-8d56-4f0b-8daf-2cfdc43c18ed", debt = "23ebdfbe-8d56-4f0b-8daf-2cfdc43c18ed", amount = 3)
     )
     for (order in orderList) {
         COrders(myDataSource).create(order)
     }
-    */
+
     //get the amount to pay for te user with the dni 45678901D
     var debt = COrders(myDataSource).getDebt("45678901D")
     println("La deuda es de $debt")

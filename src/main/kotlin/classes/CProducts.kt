@@ -23,10 +23,10 @@ class CProducts(private val dataSource: DataSource) : IDataAccess<Products> {
     }
 
     override fun getByName(name: String): Products? {
-        val sql = "SELECT * FROM PRODUCTS WHERE name = ?"
+        val sql = "SELECT * FROM PRODUCTS WHERE id = ?"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
-                stmt.setString(2, name)
+                stmt.setString(1, name)
                 val rs = stmt.executeQuery()
                 if (rs.next()) {
                     Products(
@@ -88,6 +88,16 @@ class CProducts(private val dataSource: DataSource) : IDataAccess<Products> {
         dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
                 stmt.setString(1, id.toString())
+                stmt.executeUpdate()
+            }
+        }
+    }
+    fun updateStock(ID: String, STOCK: Int): Int {
+        val sql = "UPDATE PRODUCTS SET stock = (stock - ?) WHERE id = ?"
+        return dataSource.connection().use { conn ->
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setInt(1, STOCK)
+                stmt.setString(2, ID)
                 stmt.executeUpdate()
             }
         }

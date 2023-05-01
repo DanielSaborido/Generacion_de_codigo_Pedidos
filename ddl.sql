@@ -22,7 +22,8 @@ CREATE TABLE ORDERS(
                       amount NUMBER,
                       date DATE,
                       state ENUM('Outstanding', 'Paid', 'Indicted', 'Sent', 'Delivered'),
-                      FOREIGN KEY (owner) REFERENCES USERS(DNI)
+                      FOREIGN KEY (owner) REFERENCES USERS(DNI),
+                      FOREIGN KEY (products) REFERENCES PRODUCTS(id)
 );
 
 CREATE TABLE PAYMENT (
