@@ -1,7 +1,6 @@
 package classes
 
 import entities.Orders
-import entities.Products
 import entities.stateOrder
 import interfaces.DataSource
 import interfaces.IDataAccess
@@ -9,13 +8,15 @@ import java.util.*
 
 class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
     override fun create(entity: Orders): Orders {
-        val sql = "INSERT INTO ORDERS (id, owner, products, debt, date) VALUES ( ?, ?, ?, ?, ?)"
+        val sql = "INSERT INTO ORDERS (id, owner, products, debt, amount, date) VALUES ( ?, ?, ?, ?, ? ,?)"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
-                stmt.setString(1, entity.owner)
-                stmt.setString(2, entity.products.toString())
-                stmt.setString(3, entity.debt.toString())
-                stmt.setString(4, entity.date.toString())
+                stmt.setString(1, entity.id.toString())
+                stmt.setString(2, entity.owner)
+                stmt.setString(3, entity.products)
+                stmt.setString(4, entity.debt.toString())
+                stmt.setString(5, entity.amount.toString())
+                stmt.setString(6, entity.date.toString())
                 when(stmt.executeUpdate()) {
                     else -> entity
                 }
@@ -33,8 +34,9 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
                     Orders(
                         id = UUID.fromString(rs.getString("id")),
                         owner = rs.getString("owner"),
-                        products = rs.getList<Products>("products"),
-                        debt = rs.getInt("orderPrice"),
+                        products = rs.getString("products"),
+                        debt = rs.getFloat("orderPrice"),
+                        amount = rs.getInt("orderPrice"),
                         date = rs.getDate("date"),
                         state = stateOrder.valueOf(rs.getString("state"))
                     )
@@ -56,8 +58,9 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
                         Orders(
                             id = UUID.fromString(rs.getString("id")),
                             owner = rs.getString("owner"),
-                            products = rs.getList<Products>("products"),
-                            debt = rs.getInt("orderPrice"),
+                            products = rs.getString("products"),
+                            debt = rs.getFloat("orderPrice"),
+                            amount = rs.getInt("orderPrice"),
                             date = rs.getDate("date"),
                             state = stateOrder.valueOf(rs.getString("state"))
                         )
@@ -69,13 +72,13 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
     }
 
     override fun update(entity: Orders): Orders {
-        val sql = "UPDATE ORDERS SET owner = ?, products = ?, debt = ?, date = ?, state = ? WHERE id = ?"
+        val sql = "UPDATE ORDERS SET state = ? WHERE owner = ?"
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
                 stmt.setString(1, entity.state.toString())
                 stmt.setString(2, entity.date.toString())
                 stmt.setString(3, entity.debt.toString())
-                stmt.setString(4, entity.products.toString())
+                stmt.setString(4, entity.products)
                 stmt.setString(5, entity.owner)
                 stmt.setString(6, entity.id.toString())
                 stmt.executeUpdate()
@@ -90,6 +93,20 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
             conn.prepareStatement(sql).use { stmt ->
                 stmt.setString(1, id.toString())
                 stmt.executeUpdate()
+            }
+        }
+    }
+    fun getDebt(name: String): Float {
+        val sql = "SELECT SUM(debt) FROM ORDERS WHERE owner = ?"
+        return dataSource.connection().use { conn ->
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, name)
+                val rs = stmt.executeQuery()
+                if (rs.next()) {
+                    rs.getFloat("SUM(debt)")
+                } else {
+                    0f
+                }
             }
         }
     }

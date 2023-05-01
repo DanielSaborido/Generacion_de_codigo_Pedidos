@@ -1,11 +1,15 @@
+import classes.COrders
 import classes.CProducts
 import classes.CUser
 import classes.DataSourceImpl
+import entities.Orders
 import entities.Products
 import entities.User
 
 fun main() {
     val myDataSource = DataSourceImpl()
+    //insert information in products
+    /*
     val productList = listOf(
         Products(name = "Bag", description = "Leather bag", price = 60.0f, taxes = 21, stock = 15),
         Products(name = "Sneakers", description = "Sports sneakers", price = 80.0f, taxes = 19, stock = 10),
@@ -31,6 +35,9 @@ fun main() {
     for (product in productList) {
         CProducts(myDataSource).create(product)
     }
+    */
+    //insert information in user
+    /*
     val userList = listOf(
         User("12345678A", "Juan Pérez", 623456789, "juanperez@gmail.com"),
         User("23456789B", "María Gómez", 687654321, "mariagomez@hotmail.com"),
@@ -46,4 +53,21 @@ fun main() {
     for (user in userList) {
         CUser(myDataSource).create(user)
     }
+    */
+    //insert information in oders
+    /*
+    val orderList = listOf(
+        Orders(owner = "45678901D", products = "Nike T-Shirt", debt = 25.0f, amount = 1),
+        Orders(owner = "45678901D", products = "Adidas Sneakers", debt = 90.0f, amount = 1),
+        Orders(owner = "45678901D", products = "Puma Cap", debt = 15.0f, amount = 1),
+        Orders(owner = "45678901D", products = "Under Armour Socks", debt = 8.0f, amount = 1),
+        Orders(owner = "45678901D", products = "Reebok Shorts", debt = 30.0f, amount = 1)
+    )
+    for (order in orderList) {
+        COrders(myDataSource).create(order)
+    }
+    */
+    //get the amount to pay for te user with the dni 45678901D
+    var debt = COrders(myDataSource).getDebt("45678901D")
+    println("La deuda es de $debt")
 }

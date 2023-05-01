@@ -17,8 +17,9 @@ CREATE TABLE PRODUCTS(
 CREATE TABLE ORDERS(
                       id VARCHAR(36) PRIMARY KEY,
                       owner VARCHAR(9),
-                      debt NUMBER,
                       products VARCHAR,
+                      debt NUMBER,
+                      amount NUMBER,
                       date DATE,
                       state ENUM('Outstanding', 'Paid', 'Indicted', 'Sent', 'Delivered'),
                       FOREIGN KEY (owner) REFERENCES USERS(DNI)
