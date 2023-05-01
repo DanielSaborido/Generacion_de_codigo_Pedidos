@@ -1,7 +1,6 @@
 package classes
 
 import entities.Orders
-import entities.Products
 import entities.stateOrder
 import interfaces.DataSource
 import interfaces.IDataAccess
@@ -9,7 +8,7 @@ import java.util.*
 
 class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
     override fun create(entity: Orders): Orders {
-        val sql = "INSERT INTO ORDERS (id, owner, products, debt, amount, date) VALUES ( ?, ?, ?, (SELECT (price+(price*(taxes/100))) FROM PRODUCTS WHERE id = ?), ? ,?)"
+        val sql = "INSERT INTO ORDERS (id, owner, products, debt, amount, date, state) VALUES ( ?, ?, ?, (SELECT (price+(price*(taxes/100))) FROM PRODUCTS WHERE id = ?), ? ,?, ?)"
         CProducts(dataSource).updateStock(entity.products, entity.amount)
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
@@ -19,6 +18,7 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
                 stmt.setString(4, entity.debt)
                 stmt.setString(5, entity.amount.toString())
                 stmt.setString(6, entity.date.toString())
+                stmt.setString(7, entity.state.toString())
                 when(stmt.executeUpdate()) {
                     else -> entity
                 }
@@ -78,11 +78,12 @@ class COrders(private val dataSource: DataSource) : IDataAccess<Orders> {
         return dataSource.connection().use { conn ->
             conn.prepareStatement(sql).use { stmt ->
                 stmt.setString(1, entity.state.toString())
-                stmt.setString(2, entity.date.toString())
-                stmt.setString(3, entity.debt)
-                stmt.setString(4, entity.products)
-                stmt.setString(5, entity.owner)
-                stmt.setString(6, entity.id.toString())
+                stmt.setString(2, entity.state.toString())
+                stmt.setString(3, entity.date.toString())
+                stmt.setString(4, entity.debt)
+                stmt.setString(5, entity.products)
+                stmt.setString(6, entity.owner)
+                stmt.setString(7, entity.id.toString())
                 stmt.executeUpdate()
                 entity
             }
